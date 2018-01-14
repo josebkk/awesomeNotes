@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Awesome Notes - Registration</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen" />
+    <link href="../static/css/home.css"
+          th:href="@{/css/home.css}"
+          rel="stylesheet" media="screen" />
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+  <script th:src="@{/webjars/jquery-ui/jquery-ui.min.js}"></script>
+  <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+  <script type="text/javascript" src="../../js/commonValidations.js"></script>
+</head>
+<body>
+
+
+
+	<div class="container">
+		<div id="signupbox" style="margin-top:50px" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <div class="panel-title">Sign Up</div>
+                            <div style="float:right; font-size: 85%; position: relative; top:-10px"><a id="signinlink" th:href="@{/}">Sign In</a></div>
+                        </div>  
+                        <div class="panel-body" >
+                            <form autocomplete="off" action="#" th:action="@{/registration}" th:object="${user}" method="post" enctype="multipart/form-data" class="form-horizontal" role="form">
+                                
+                                <div id="signupalert" style="display:none" class="alert alert-danger">
+                                    <p>Error:</p>
+                                    <span></span>
+                                </div>
+                                    
+                                
+                                <div class="form-group">
+									<div class="col-sm-12">
+										<label>Email:</label>
+										<label style="font-size: 20; color: #FF1C19;" th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="validation-message"></label>
+										<input type="text" id="email" th:field="*{email}" class="form-control" />
+									</div>
+								</div>
+                                    
+                                <div class="form-group">
+									<div class="col-sm-12">
+										<label>First name:</label>
+										<label style="font-size: 20; color: #FF1C19;" th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="validation-message"></label>
+										<input type="text" th:field="*{name}" class="form-control" /> 
+									</div>
+								</div>
+								
+                                <div class="form-group">
+									<div class="col-sm-12">
+									<label>Last name:</label>
+									<label style="font-size: 20; color: #FF1C19;" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="validation-message"></label>
+									<input type="text" th:field="*{lastName}" class="form-control" /> 
+									</div>
+								</div>
+								
+                                <div class="form-group">
+									<div class="col-sm-12">
+									<label>Password:</label>
+									<label style="font-size: 20; color: #FF1C19;" th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="validation-message"></label>
+									<input type="password" th:field="*{password}" class="form-control" />
+									</div>
+								</div>
+								
+								<div class="form-group">
+									<div class="col-sm-12">
+									<label	style="font-size: 20; color: #FF1C19;" th:if="${#fields.hasErrors('avatar')}" th:errors="*{avatar}" class="validation-message"></label>
+									<label>Profile avatar:</label>
+									<input type="file" name="avatar"/> 
+									</div>
+								</div>
+                                   
+
+                                <div class="form-group">
+                                    <!-- Button -->                                        
+                                    <div class="col-md-offset-4 col-md-9">
+                                        <button id="register" type="submit" class="btn btn-info"><span class="glyphicon glyphicon-user"></span> Sign Up</button> 
+                                    </div>
+                                </div>
+                             
+							 <label style="font-size: 20; color: green;" th:utext="${successMessage}"></label>
+                                                             
+                            </form>
+                         </div>
+                    </div>
+
+                
+         </div> 
+
+	</div>
+
+<script>
+
+$("#register").bind("click", validate);	
+
+function validate() {
+var email = $("#email").val();
+if (!validateEmail(email)) {
+  $("#emailValidation").html(email + " is not valid.");
+  $("#emailValidation").css("color", "red");
+  alert("Your email is invalid,  please insert a valid one");
+  return false;
+}
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+smithmicro\apps\awesomeNotes\model\Note.class
+smithmicro\apps\awesomeNotes\AwesomeNotesApplication.class
+smithmicro\apps\awesomeNotes\controller\NoteController.class
+smithmicro\apps\awesomeNotes\repository\UserRepository.class
+smithmicro\apps\awesomeNotes\model\User.class
+smithmicro\apps\awesomeNotes\service\UserService.class
+smithmicro\apps\awesomeNotes\repository\LocationRepository.class
+smithmicro\apps\awesomeNotes\model\Location.class
+smithmicro\apps\awesomeNotes\repository\NoteRepository.class
+smithmicro\apps\awesomeNotes\service\UserServiceImpl.class
+smithmicro\apps\awesomeNotes\WebMvcConfig.class
+smithmicro\apps\awesomeNotes\service\NoteService.class
+smithmicro\apps\awesomeNotes\controller\LoginController.class
+smithmicro\apps\awesomeNotes\model\Role.class
+smithmicro\apps\awesomeNotes\repository\RoleRepository.class
+smithmicro\apps\awesomeNotes\SecurityConfiguration.class

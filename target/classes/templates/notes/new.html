@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+
+<head>
+    <title>Awesome Notes - Create Note</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen" />
+    <link href="../css/home.css"
+          th:href="@{/css/home.css}"
+          rel="stylesheet" media="screen" />
+	<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+  	<script th:src="@{/webjars/jquery-ui/jquery-ui.min.js}"></script>
+  	<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+  	<script src="https://maps.google.com/maps/api/js?key=AIzaSyDTFN8HdFW9d9PsWGVgWSwXrrDA-HMkyb8&sensor;"></script>
+  	<script type="text/javascript" src="https://l2.io/ip.js?var=userip"></script>
+  	<script type="text/javascript" src="../js/maps.js"></script>
+</head>
+<style media="screen" type="text/css">
+
+.btn-round-lg{
+border-radius: 22.5px;
+}
+.btn-round{
+border-radius: 17px;
+}
+.btn-round-sm{
+border-radius: 15px;
+}
+
+.btn{
+color: grey;
+}
+
+
+</style>
+
+
+<body>
+
+<div th:replace="fragments/header :: header"></div>
+
+<th:block layout:fragment="content">
+
+<br/>
+<br/>
+
+<form th:action="@{/notes/new}" th:object="${note}" enctype="multipart/form-data" method="POST">
+
+<table class="table borderless">
+      <tr>
+        <td>
+        	<label	style="font-size: 20; color: #FF1C19;" th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="validation-message"></label>
+			<label><font color="red"><strong>*</strong></font> Note title:</label>
+        	<input type="text" size="50" maxlength="255" th:field="*{title}"/>
+        </td>
+      </tr>
+      <tr>
+        <td> <label	th:if="${#fields.hasErrors('content')}" th:errors="*{content}" class="validation-message"></label>
+			<label><font color="red"><strong>*</strong></font> Note content:</label>
+			<textarea class="form-control" rows="8" cols="2" maxlength="255" id="noteContent" th:field="*{content}"></textarea>
+		</td>
+      </tr>
+      <tr>
+          <td>
+          	<label	th:if="${#fields.hasErrors('image')}" th:errors="*{image}" class="validation-message"></label>
+			<label>Note image:</label>
+			<input type="file" name="image"/>
+          </td>
+      </tr>
+      <tr>
+        <td>
+        	<label	th:if="${#fields.hasErrors('location')}" th:errors="*{location}" class="validation-message"></label>
+				<button type="button" id="myLocation" class="btn btn-sm" name="myLocation">
+        		<span class="glyphicon glyphicon-map-marker"></span> Add my location to note
+        		</button>
+			<br/>
+		<input type="hidden" id="jsonStringLocation" name="jsonStringLocation"/>
+		<div style="display:none;" id="locationText"></div>
+		<div style="width:600px;height:400px" id="map"></div>
+			
+        </td>
+      </tr>
+      <tr>
+      	<td>
+         <button type="submit" class="btn btn-sm" name="createNote">
+        <span class="glyphicon glyphicon-plus"></span> Create Note
+        </button>
+      	</td>
+      </tr>
+    </table>
+    </form>
+</th:block>
+	<script>
+	$(document).ready(function() {
+
+		$("#myLocation").click(function() {
+	
+			$.getJSON("/getLocationByIpAddress",
+			{
+				ipAddress : userip
+			}, 
+			function(data) {
+				
+				var data = JSON.stringify(data);
+				var json = JSON.parse(data);
+				
+				showMap(json["latitude"],json["longitude"],true);
+				
+				$("#jsonStringLocation").val(data);
+				$("#locationText").html('My location: ' + json["postalCode"]+', ' + json["city"]+' - ' + json["countryName"] + '. (Hint: You can drag the location pin to set other location)');
+				$("#locationText").show();
+
+			})
+			.done(function() {
+			
+				
+			})
+			.fail(function() { 
+			})
+			.complete(function() { 			
+			});
+			
+		});
+		
+		var map;	
+	});
+	</script>
+<footer>
+        <div th:replace="fragments/footer :: footer"></div>
+    </footer>
+</body>
+</html>

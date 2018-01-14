@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+
+<head>
+    <title>Awesome Notes - My Notes</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen" />
+    <link href="../static/css/home.css"
+          th:href="@{/css/home.css}"
+          rel="stylesheet" media="screen" />
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+  <script th:src="@{/webjars/jquery-ui/jquery-ui.min.js}"></script>
+  <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+</head>
+<style media="screen" type="text/css">
+
+.btn-round-lg{
+border-radius: 22.5px;
+}
+.btn-round{
+border-radius: 17px;
+}
+.btn-round-sm{
+border-radius: 15px;
+}
+
+.btn{
+color: grey;
+}
+
+
+</style>
+
+
+<body>
+<div th:replace="fragments/header :: header"></div>
+
+<th:block layout:fragment="content">
+<br/>
+<div align="center">
+<label id="message" style="font-size: 20; color: green;" th:utext="${successMessage}"></label>
+</div>
+<div class="input-group" style="width: 40%;">
+      <input id="notesearch" type="text" class="form-control"  placeholder="Insert a note title to search..."/>
+    </div>
+<br/>
+    <h2 th:text="${userName} + ' Notes'"></h2>
+	
+    <table id="notes" class="table table-striped">
+        <thead>
+        <tr>
+            <th style="width: 20%;">Created</th>
+            <th style="width: 50%;">Title</th>
+            <th style="width: 15%; text-align: center;">View/Edit Note</th>
+            <th style="width: 15%; text-align: center;">Delete Note</th>
+        </tr>
+        </thead>
+        <tbody>
+        	<tr th:each="uinotes : ${notes}">
+					<td th:text="${uinotes.created}"></td>
+					<td th:text="${uinotes.title}"></td>
+					<td style="text-align: center;"> <a th:href="@{|/notes/${uinotes.noteId}/edit|}">
+					<button id="editNote" class="btn btn-round-lg btn-sm" name="editNote">
+					 <span class="glyphicon glyphicon-edit"></span>
+					 </button>
+					</a>
+					</td>
+					<td style="text-align: center;">
+						<form th:if="*{uinotes.createdBy.id == userId}" th:action="@{|/notes/${uinotes.noteId}/delete|}" method="POST">
+							<button id="deleteNote" class="btn btn-round-lg btn-sm" name="deleteNote" type="submit" 
+							    onclick="if(!(confirm('Are you sure you want to delete this note?'))) return false;">
+							    <span class="glyphicon glyphicon-trash"></span>
+							</button>
+						</form>
+						<span th:if="*{uinotes.createdBy.id != userId}" class="glyphicon glyphicon-ban-circle" style="color:red; font-size: 20px"></span>
+					</td>
+				</tr>
+        </tbody>
+    </table>
+</th:block>
+
+<div th:replace="fragments/footer :: footer"></div>
+
+<script th:inline="javascript">
+var $rows = $('#notes > tbody > tr');
+$('#notesearch').keyup(function() {
+    var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+    
+    $rows.show().filter(function() {
+        var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+        return !~text.indexOf(val);
+    }).hide();
+});
+</script>
+
+</body>
+</html>
