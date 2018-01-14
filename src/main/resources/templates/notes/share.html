@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+
+<head>
+    <title>Awesome Notes - Create Note</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen" />
+    <link href="../static/css/home.css"
+          th:href="@{/css/home.css}"
+          rel="stylesheet" media="screen" />
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+  <script th:src="@{/webjars/jquery-ui/jquery-ui.min.js}"></script>
+  <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+</head>
+<style media="screen" type="text/css">
+
+.btn-round-lg{
+border-radius: 22.5px;
+}
+.btn-round{
+border-radius: 17px;
+}
+.btn-round-sm{
+border-radius: 15px;
+}
+
+.btn{
+color: grey;
+}
+
+
+</style>
+
+
+<body>
+
+<div th:replace="fragments/header :: header"></div>
+
+<th:block layout:fragment="content">
+
+<br/>
+<br/>
+
+<form th:action="@{|/notes/${noteId}/share|}" th:object="${note}" method="POST">
+<label th:if="${users.size()} > 0">Select a user you want to share this note:</label>
+<label th:if="${users.size()} == 0" style="font-size: 20; color: #FF1C19;">There's no users to share this note. 
+	<a th:href="@{|/notes/${noteId}/edit|}">
+		<button type="button" class="btn btn-sm" name="back">
+    		<span class="glyphicon glyphicon-chevron-left"></span> Back
+       </button>
+    </a>
+</label>
+<table th:if="${users.size()} > 0" class="table borderless">
+<thead>
+        <tr>
+            <th style="width: 50%;">User</th>
+            <th style="width: 50%;">Share?</th>
+        </tr>
+        </thead>
+        <tbody>
+        	<tr th:each="user : ${users}">
+					<td th:text="${user.name} + ' ' + ${user.lastName}"></td>
+					<td><input type="checkbox" th:checked="${user.checked}" th:value="${user.id}" name="userIds"/></td>
+				</tr>
+				<tr>
+      				<td>
+         				<button type="submit" class="btn btn-sm" name="shareNote">
+        				<span class=" glyphicon glyphicon-share"></span> Share
+        				</button>
+      				</td>
+      			</tr>
+        </tbody>
+    </table>
+    </form>
+</th:block>
+
+
+<footer>
+        <div th:replace="fragments/footer :: footer"></div>
+    </footer>
+</body>
+</html>
